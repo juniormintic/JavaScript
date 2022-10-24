@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>asincronia</title>
+  </head>
+  <body>
+    <script>
+      /*
+        console.log('inicio');
+        setTimeout(()=>{
+            console.log('ejecutando un settimeout esto se ejecuta una sola vez');
+        },3000);
+
+        setInterval(()=>{
+            console.log('ejecutando un setinterval, esto se ejucuta indefinidamente cada cierto intervalo de tiempo');
+        },1000);
+       
+       let temporizador= setTimeout(()=>{
+            console.log(new Date().toLocaleTimeString());
+        },1000);
+
+        clearTimeout(temporizador);
+        console.log('despues del cleartimeout');
+
+
+       let temporizador= setInterval(()=>{
+           console.log(new Date().toLocaleTimeString());
+        },1000);
+        clearInterval(temporizador);
+       console.log('despues del clearinterval');
+*/
+      /* **********     Curso JavaScript: 45. Asincronía y el Event Loop - #jonmircha     ********** */
+
+      /*  Antes de explicar como funciona el modelo de JavaScript es importante entender algunos conceptos:
+        Procesamiento Single thread y Multi thread.
+        Operaciones de CPU y Operaciones de I / O.
+        Operaciones Concurrentes y Paralelas.
+        Operaciones Bloqueantes y No Bloqueantes.
+        Operaciones Síncronas y Asíncronas.
+        Javascript usa un modelo asíncrono y no bloqueante, con un loop de eventos implementado en un sólo hilo, (single thread) para operaciones de entrada y salida (input/output).
+        */
+
+      /* //Código Síncrono Bloquenate
+        (() => {
+        console.log("Código Síncrono");
+        console.log("Inicio");
+        function dos() {
+            console.log("Dos");
+        }
+        function uno() {
+            console.log("Uno");
+            dos();
+            console.log("Tres");
+        }
+        uno();
+        console.log("Fin");
+        })();
+        console.log("********************");
+        //Código Asíncrono No Bloquenate
+        (() => {
+        console.log("Código Asíncrono");
+        console.log("Inicio");
+        function dos() {
+            setTimeout(function () {
+            console.log("Dos");
+            }, 1000);
+        }
+        function uno() {
+            setTimeout(function () {
+            console.log("Uno");
+            }, 0);
+            dos();
+            console.log("Tres");
+        }
+        uno();
+        console.log("Fin");
+        })(); */
+
+      /* **********     Curso JavaScript: 46. Callbacks - #jonmircha     ********** */
+        //las callback son funciones que se pasan como rametro en otra funcion para control de tiempo de ejcucion de esta
+/*      function cuardradoCallback(value, callback) {
+        setTimeout(() => {
+          callback(value, value * value);
+        },  Math.random()*1000);
+      }
+      cuardradoCallback(0, (value, result) => {
+        console.log("inicio funcion callback");
+        console.log(`callback: ${value}, ${result}`);
+        cuardradoCallback(1, (value, result) => {
+          console.log(`callback: ${value}, ${result}`);
+          cuardradoCallback(2, (value, result) => {
+            console.log(`callback: ${value}, ${result}`);
+            cuardradoCallback(3, (value, result) => {
+              console.log(`callback: ${value}, ${result}`);
+              cuardradoCallback(4, (value, result) => {
+                console.log(`callback: ${value}, ${result}`);
+                cuardradoCallback(5, (value, result) => {
+                  console.log(`callback: ${value}, ${result}`);
+                  console.log("Fin Callback");
+                  console.log("Callback Hell !!!!!😈🤘");
+                });
+              });
+            });
+          });
+        });
+      });
+
+      //otro ejemplo
+      //el callback recive el parametro valor y parametro funcion
+      function mensaje(nombre,cb){
+          //setTimeOut simula una demora o peticion
+          setTimeout(()=>{
+              //se llama a la funcion que se recibe en parametro y se le pasa el valor del parametro nombre
+              cb(nombre);             
+          },5000);
+      }
+ //se llama la funcion callback y se envian dos parametros uno el nombre y el segundo se crea la funcion  que sera llamada en el callback
+      mensaje('luis',(nombre)=>{
+          console.log(`hola ${nombre}`);
+      });
+*/
+          /* **********     Curso JavaScript: 47. Promesas - #jonmircha     ********** */
+          //las promesas mejoran la sintasis y ademas dan mejor manejo de los errores
+          //funcion promesa
+          function cuadradoPromesa(value){
+              //se valida el tipo de valor que se recive si es errado se envia un promise.reject
+              if (typeof value !== "number") {
+                //no usar temple strin las comillas  usar comilla simple o doblr
+                  return Promise.reject(`Error, el valor " ${value} " ingresado no es un número`);
+          }
+             //se crea una instancia de pomise y se devuelben los valores con resolve
+              return new Promise((resolve,reject)=>{
+                  setTimeout(()=>{
+                      //se crea una instacioa objecto
+                      resolve({
+                          value,
+                          result:value*value
+                      });
+                  },0|Math.random()*1000);
+              });
+          }
+          //se llama la funcion promesa y se pasa un valor 
+          cuadradoPromesa(0)
+          //el then es para el caso en que si se ejecuto correctamente se crea una funcion para imprimir la respuesta 
+            .then(obj=>{
+                console.log('inicio de promesas');
+                console.log(`promesa: ${obj.value}, ${obj.result}`)
+                return cuadradoPromesa(1);
+            })
+            .then(obj=>{
+                console.log(`promesa: ${obj.value}, ${obj.result}`)
+                return cuadradoPromesa(2);
+            })
+            .then(obj=>{
+                console.log(`promesa: ${obj.value}, ${obj.result}`)
+                return cuadradoPromesa(3);
+            })
+            .then(obj=>{
+                console.log(`promesa: ${obj.value}, ${obj.result}`)
+                return cuadradoPromesa(4);
+            })
+            .then(obj=>{
+                console.log(`promesa: ${obj.value}, ${obj.result}`)
+                return cuadradoPromesa(5);
+            })
+            .then(obj=>{
+                console.log(`promesa: ${obj.value}, ${obj.result}`)               
+            })
+            //el catch es para en caso de que ocurra un error
+            .catch(err => console.error(err));
+
+
+             /* **********     Curso JavaScript: 47. Promesas - #jonmircha     ********** */
+
+             function cuadradoPromise (value){
+               if(typeof value!=='number')
+               return Promise.reject(`Error, el valor " ${value} " ingresado no es un número`);
+
+               return  new Promise((resolve,reject)=>{
+                 setTimeout(()=>{
+                   resolve({
+                     value,
+                     result:value*value
+                   });
+                 },0|Math.random()*1000);
+               });
+
+             };
+
+              async function funcionAsincrona(){
+              try {
+                console.log('inicio de la funcion asincrona');
+                let obj= await cuadradoPromesa(6);
+                console.log(`funcion async ${obj.value} , ${obj.result}`);
+
+                 obj= await cuadradoPromesa(7);
+                console.log(`funcion async ${obj.value} , ${obj.result}`);
+
+                 obj= await cuadradoPromesa(8);
+                console.log(`funcion async ${obj.value} , ${obj.result}`);
+
+                 obj= await cuadradoPromesa(9);
+                console.log(`funcion async ${obj.value} , ${obj.result}`);               
+
+                 obj= await cuadradoPromesa(10);
+                console.log(`funcion async ${obj.value} , ${obj.result}`);
+                
+              } catch (error) {
+                console.error(err);
+              }
+
+              }
+              funcionAsincrona();
+
+
+    </script>
+  </body>
+</html>

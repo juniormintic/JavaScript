@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THIS</title>
+</head>
+<body>
+    <script>
+        /* **********     Curso JavaScript: 58. call, apply, bind - #jonmircha     ********** */
+  //lla ma al objecto windows 
+  /*      console.log(this);
+//se cre un nuevo valor dentro del objecto windows 
+        this.nombre="contexto global";
+
+        console.log(this.nombre);
+//funcion que llama al this nombre esta funcion llama de manera global de esta manera llama al windows y luego nombre
+        function imprimir(){
+            console.log(this.nombre);
+        }
+        imprimir();
+//usando el this en una funcion que esta dentro de un objecto 
+        const obj={
+            nombre:"contexto objecto",
+            imprimir: function (){
+                console.log(this.nombre);
+            }
+        };
+        obj.imprimir();
+//pasando  introduciendo funcion imprimir que llama al this pero del objecto una vez se llama como methopdos del objecto
+        const obj2={
+            nombre:"contexto objecto2",
+            imprimir
+        };
+
+        obj2.imprimir();
+      //pasando this dentro a un methodot
+        const obj3={
+            nombre:"contexto objecto3",
+            imprimir (){
+                console.log(this.nombre);
+            }
+        };
+        obj3.imprimir();
+
+        //usando una arrow function dentro de un obj para imprimir el this.nombre ESTO ES UN EJEMPLO NO SE RECOMIENDA HACER 
+        const obj4={
+            nombre:"contexto de objecto4",
+            //este no se recomienda las arrow function heredan del objecto padre osea el windows
+            imprimir: ()=>console.log(this.nombre+" " +"obj4")//imprime contexto global
+        };
+        obj4.imprimir();//imprime contexto global
+
+        //function constructora
+        function Persona (nombre){
+           //esto se usaba antes de las arrow function
+            const that=this;
+            that.nombre=nombre;
+
+            //esto se usaba antes de las arrow function
+           return function (){
+               console.log(that.nombre);
+           }
+        }
+
+        const jon= new Persona('jon');
+        jon();
+
+        function Persona2(nombre){
+            this.nombre=nombre;
+         //  console.log(this.nombre);
+         //el sigiente no funciona traera el windows la solucion es usar las arrow funcion 
+         //  return function (){
+           //  console.log(this.nombre);//este imprime contexto global
+           //  }
+            //este debuelve el nombre y el this en la arrow function si sirve porque el bloque es de la funcion contructora PERSONA2
+           return ()=>console.log(this.nombre);//imprime junior
+        }
+        const junior= new Persona2('junior');
+        junior();
+
+*/
+  /* **********     Curso JavaScript: 58. call, apply, bind - #jonmircha     ********** */
+console.log(this);
+
+this.lugar="contexto global";
+
+function saludar (saludo,quien){
+    console.log(`${saludo} ${quien} desde el ${this.lugar}`);
+    }
+
+    saludar("hola","kenai");
+
+    const obj ={
+        lugar:"contexto objecto"
+    };
+//para evitar insertar la funcion como methodo dentro del obj se puede usar 
+//el methodo call  o apply invocando la funcion y luego call para pasar el obj entre parentesis
+//de esta manera indicara que la funcion saludar usara el contexto del objecto para ejecutarse
+// ose que tomara los datos necesarios para ejecutarse desde el objecto
+//call y apply en este caso son iguales en lo que se diferencian es en la manera de pasar parametros 
+//call se separan por coma y apply se pasa dentro de un array
+saludar.call(obj,"hola","junior");//tomara el onj
+saludar.call(this,"hola","junior");//tomara el this del windows
+saludar.call(null,"hola","junior");//tomara el this del windows
+saludar.apply(obj, ["hola","junior"]);//tomara el onj
+saludar.apply(this, ["hola","junior"]);//tomara el this del windows
+saludar.apply(null, ["hola","junior"]);//tomara el this del windows
+
+const persona ={
+    nombre:"jhon",
+    saludar:function(){
+        console.log(`hola ${this.nombre}`);
+    }
+};
+ const otraPersona ={
+     //con el bind se vincula de esta manera se enlasa el contexto de el obj persona para usar su methodo y propiedad
+    saluda:persona.saludar.bind(persona)
+ };
+
+ otraPersona.saluda();
+    </script>
+</body>
+</html>
